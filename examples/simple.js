@@ -4,7 +4,7 @@ var gps = require('../index');
 var options = {
   debug: true,
   port: 8090,
-  device_adapter: 'TK103B'
+  device_adapter: 'GT06'
 }
 
 var server = gps.server(options, function (device, connection) {
@@ -25,6 +25,13 @@ var server = gps.server(options, function (device, connection) {
     //console.log(data);
     return data
 
+  });
+
+  //PING -> When the gps sends their position
+  device.on('action', function (actionData, msgParts) {
+
+    console.log('ACTION: ' + JSON.stringify(actionData));
+    console.log('MSG: ' + JSON.stringify(msgParts));
   });
 
 });
