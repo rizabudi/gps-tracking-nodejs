@@ -34,6 +34,13 @@ var server = gps.server(options, function (device, connection) {
     console.log('MSG: ' + JSON.stringify(msgParts));
   });
 
+  //PING -> When the gps sends their position
+  device.on('heartbeat', function (actionData, msgParts) {
+
+    console.log('ACTION: ' + JSON.stringify(actionData));
+    console.log('MSG: ' + JSON.stringify(msgParts));
+  });
+
 });
 
 server.setDebug(true);
