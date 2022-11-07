@@ -4,7 +4,7 @@ var gps = require('../index');
 var options = {
   debug: true,
   port: 8090,
-  device_adapter: 'GT06'
+  device_adapter: 'GT06N'
 }
 
 var server = gps.server(options, function (device, connection) {
@@ -16,29 +16,31 @@ var server = gps.server(options, function (device, connection) {
     // Accept the login request. You can set false to reject the device.
     this.login_authorized(true)
 
+    device.send_command('1', 'DYD,000000#', 'ascii')
   })
 
   //PING -> When the gps sends their position
   device.on('ping', function (data) {
-
     //After the ping is received, but before the data is saved
-    //console.log(data);
+    console.log('PING');
+    console.log(data);
     return data
 
   });
 
-  //PING -> When the gps sends their position
-  device.on('action', function (actionData, msgParts) {
-
-    console.log('ACTION: ' + JSON.stringify(actionData));
-    console.log('MSG: ' + JSON.stringify(msgParts));
+  device.on('alarm', function (alarmCode, alarmData, msgParts) {
+    console.log('ALARM');
+    console.log(alarmData);
   });
 
-  //PING -> When the gps sends their position
-  device.on('heartbeat', function (actionData, msgParts) {
+  device.on('heartbeat', function (heartbeatData, msgParts) {
+    console.log('HEARTBEAT');
+    console.log(heartbeatData);
+  });
 
-    console.log('ACTION: ' + JSON.stringify(actionData));
-    console.log('MSG: ' + JSON.stringify(msgParts));
+  device.on('action', function (actionData, msgParts) {
+    console.log('ACTION');
+    console.log(actionData);
   });
 
 });
