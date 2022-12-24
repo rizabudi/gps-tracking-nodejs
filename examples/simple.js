@@ -4,7 +4,7 @@ var gps = require('../index');
 var options = {
   debug: true,
   port: 8090,
-  device_adapter: 'GT710'
+  device_adapter: 'GT06N'
 }
 
 var server = gps.server(options, function (device, connection) {
@@ -23,6 +23,13 @@ var server = gps.server(options, function (device, connection) {
   device.on('ping', function (data) {
     //After the ping is received, but before the data is saved
     console.log('PING');
+    console.log(data['date']);
+    
+    var d = new Date(data['date']);
+    d.setTime( d.getTime() + 7*60*1000 );
+
+    console.log(d);
+    console.log(d.toISOString());
     console.log(data);
     return data
 
@@ -36,6 +43,7 @@ var server = gps.server(options, function (device, connection) {
   device.on('heartbeat', function (heartbeatData, msgParts) {
     console.log('HEARTBEAT');
     console.log(heartbeatData);
+    device.send_response('13')
   });
 
   device.on('action', function (actionData, msgParts) {
