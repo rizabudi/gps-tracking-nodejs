@@ -4,7 +4,7 @@ var gps = require('../index');
 var options = {
   debug: true,
   port: 8090,
-  device_adapter: 'GT06N'
+  device_adapter: 'CONCOXX3'
 }
 
 var server = gps.server(options, function (device, connection) {
